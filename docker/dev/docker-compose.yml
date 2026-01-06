@@ -1,0 +1,38 @@
+version: "3.9"
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mfg_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: mfg
+      MYSQL_USER: mfg
+      MYSQL_PASSWORD: mfg
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    command: ["--default-authentication-plugin=mysql_native_password"]
+
+  redis:
+    image: redis:7
+    container_name: mfg_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  meilisearch:
+    image: getmeili/meilisearch:v1.6
+    container_name: mfg_meili
+    environment:
+      MEILI_MASTER_KEY: "masterKeyChangeMe"
+    ports:
+      - "7700:7700"
+    volumes:
+      - meili_data:/meili_data
+
+volumes:
+  mysql_data:
+  redis_data:
+  meili_data:

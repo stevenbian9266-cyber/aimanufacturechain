@@ -1,0 +1,73 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  ADMIN
+  BUYER
+  SUPPLIER
+}
+
+enum CompanyMemberRole {
+  OWNER
+  MEMBER
+}
+
+model User {
+  id           BigInt   @id @default(autoincrement())
+  email        String   @unique
+  passwordHash String   @map("password_hash")
+  role         UserRole
+  preferredLang String? @map("preferred_lang")
+  status       String   @default("ACTIVE")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  memberships  CompanyMember[]
+
+  @@map("users")
+}
+
+model Company {
+  id        BigInt   @id @default(autoincrement())
+  name      String
+  type      String   @default("BOTH")
+  country   String? 
+  city      String?
+  profileI18n Json?  @map("profile_i18n")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  members   CompanyMember[]
+
+  @@map("companies")
+}
+
+model CompanyMember {
+  companyId  BigInt @map("company_id")
+  userId     BigInt @map("user_id")
+  memberRole CompanyMemberRole @map("member_role")
+
+  company Company @relation(fields: [companyId], references: [id])
+  user    User    @relation(fields: [userId], references: [id])
+
+  @@id([companyId, userId])
+  @@map("company_members")
+}
+
+model AuditLog {
+  id        BigInt   @id @default(autoincrement())
+  actorUserId BigInt? @map("actor_user_id")
+  action    String
+  entityType String @map("entity_type")
+  entityId  String  @map("entity_id")
+  metaJson  Json?   @map("meta_json")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("audit_logs")
+}

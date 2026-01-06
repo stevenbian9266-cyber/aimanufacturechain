@@ -1,0 +1,21 @@
+{
+  "name": "mfg-b2b-platform",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently -n shared,api,web \"npm run dev -w @mfg/shared\" \"npm run dev -w @mfg/api\" \"npm run dev -w @mfg/web\"",
+    "build": "npm -ws run build --if-present",
+    "lint": "npm -ws run lint --if-present",
+    "typecheck": "npm -ws run typecheck --if-present",
+    "test": "npm -ws run test --if-present",
+    "format": "prettier -w .",
+    "format:check": "prettier -c ."
+  },
+  "devDependencies": {
+    "prettier": "^3.3.3",
+    "concurrently": "^8.2.2"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
+}

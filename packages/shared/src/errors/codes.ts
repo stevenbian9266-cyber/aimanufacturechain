@@ -1,0 +1,21 @@
+export const ErrorCodes = {
+  // Validation / generic
+  VALIDATION_ERROR: 'VALIDATION_ERROR',
+  INTERNAL_ERROR: 'INTERNAL_ERROR',
+
+  // Auth
+  AUTH_REQUIRED: 'AUTH_REQUIRED',
+  INVALID_CREDENTIALS: 'INVALID_CREDENTIALS',
+  EMAIL_ALREADY_EXISTS: 'EMAIL_ALREADY_EXISTS',
+
+  // Authorization
+  FORBIDDEN: 'FORBIDDEN',
+  COMPANY_CONTEXT_REQUIRED: 'COMPANY_CONTEXT_REQUIRED',
+  NOT_COMPANY_MEMBER: 'NOT_COMPANY_MEMBER',
+
+  // Resources / rate limit
+  RESOURCE_NOT_FOUND: 'RESOURCE_NOT_FOUND',
+  RATE_LIMITED: 'RATE_LIMITED',
+} as const;
+
+export type ErrorCode = (typeof ErrorCodes)[keyof typeof ErrorCodes];
